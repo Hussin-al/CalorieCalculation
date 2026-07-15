@@ -1,0 +1,145 @@
+<div class="col">
+  <div class="font-bold d-flex p-3 mb-2 bg-dark text-white rounded-bottom-4">
+    <div class="text-success">Calorie</div>
+    <p class="mb-0">Calculation</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-4 m-4">
+      <!-- Information Card -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title d-flex mx-3">
+            <p class="fw-bold">Deine Angabe</p>
+          </div>
+          <div class="card-body">
+            <label for="name" class="form-label fw-bold"> Dein Name</label>
+            <input type="text" class="form-control" id="nameinput" [(ngModel)]="user.name">
+            <label for="weight" class="form-label fw-bold mt-3">Gewicht(Kg)</label>
+            <input type="number" class="form-control" id="weightInput" [(ngModel)]="user.weightKg">
+            <label for="height" class="form-label fw-bold mt-3">Größe(cm)</label>
+            <input type="number" class="form-control" id="heightInput" [(ngModel)]="user.heightCm">
+            <label for="age" class="form-label fw-bold mt-3">Alter</label>
+            <input type="number" class="form-control" id="ageInput" [(ngModel)]="user.age">
+            <div class="fw-bold mt-3 mb-2">Geschlecht</div>
+            <div class="row d-flex">
+              <button type="button" class="btn btn-outline-success col-5 mx-2 gender-btn" [ngClass]=" user.gender  === 'male' ? 'btn-success text-white' : 'btn-outline-success'" (click)="selectGender('male')"><i class="bi bi-gender-male"></i>Mann</button>
+              <button type="button" class="btn btn-outline-success col-5 gender-btn" [ngClass]=" user.gender  === 'female' ? 'btn-success text-white' : 'btn-outline-success'" (click)="selectGender('female')"> <i class="bi bi-gender-female"></i>Frau</button>
+            </div>
+            <div class="fw-bold mt-3 m-1">wie ist deine Bewegung?</div>
+            <div class="form-check">
+              <input class="form-check-input" [(ngModel)]="user.activityLevel" [value]="1.2" type="radio">
+              <label>1. Wenig Bewegung</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" [(ngModel)]="user.activityLevel" [value]="1.375">
+              <label>2. Leichte Aktivität (1-3 Tage/Woche)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" [(ngModel)]="user.activityLevel" [value]="1.55">
+              <label>3. Mittlere Aktivität (3-5 Tage/Woche)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" [(ngModel)]="user.activityLevel" [value]="1.725">
+              <label>4. Hohe Aktivität (6-7 Tage/Woche)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" [(ngModel)]="user.activityLevel" [value]="1.9">
+              <label>5. Sehr intensive Aktivität</label>
+            </div>
+            <div class="row mt-4">
+              <button class="btn btn-success" type="submit" [disabled]="!isFormValid" (click)="calculateCalories()">Kalorienbedarf brechnen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ergebnis Card -->
+    <div class="col-6">
+      <div class="card mt-4 mb-4">
+        <div class="card-body">
+          <div class="card-title d-flex  mx-3">
+            <p class="fw-bold">Dein Ergebnis</p>
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center">
+              <p class="fw-bold">Dein täglicher Kalorienbedarf(TDEE):</p>
+                <p class="fs-1 fw-bold text-success">{{result}}</p>
+              <p>Kcal/Tag</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-success" role="alert">
+        <div class="row">
+          <div class="col-2">
+            <div class="d-flex align-items-center">
+              <img src="assets/icon/star.png" alt="star">
+            </div>
+          </div>
+          <div class="col">
+            <p class="fw-bold mb-0">Das ist dein Gesamtenergiebedarf</p>
+            <p>Basierend auf deinen Aufgaben und deinem Aktivitätslevel.<br>Dieser Wert zeig, wie viel Kalorien dein Körper täglich benötigt.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title d-flex mx-3">
+            <p class="fw-bold">Dein Werte im Überblick</p>
+          </div>
+
+          <div class="row">
+            <div class="d-flex text-center">
+              <div class="border col-2 mx-2"><img src="assets/icon/gewicht.png" alt="Gewicht">
+                <br>
+                @if (calculated) {
+                <span>{{user.weightKg}}</span><br>
+                }
+                <span>Kg</span><br>
+                <span>Gewicht</span>
+              </div>
+              <div class="border col-2 mx-2"><img src="assets/icon/cm.png" alt="Größe">
+                <br>
+                @if (calculated) {
+                <span>{{user.heightCm}}</span><br>
+               }
+                <span>cm</span><br>
+                <span>Größe</span>
+              </div>
+              <div class="border col-2 mx-2"><img src="assets/icon/kalender.png"  alt="Alter">
+                <br>
+                @if (calculated) {
+                <span>{{user.age}}</span>
+               }
+                <br><span>Jahre</span>
+                <br><span>Alter</span></div>
+              <div class="border col-2 mx-2"><img src="assets/icon/sport.png" alt="Aktivität">
+                <br>
+                @if (calculated) {
+                <span>{{user.activityLevel}}</span><br>
+               }
+                <span>Aktivität</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-warning mt-3" role="alert">
+            <div class="row">
+              <div class="d-flex align-items-center">
+                <img src="assets/icon/idee.png" alt="Idee">
+                <p class="fw-bold mb-0">Wichtig zu wissen</p>
+              </div>
+            </div>
+            <p> Dein Kalorienbedarf kann je nach Ziel variieren:</p>
+            <ul>
+              <li>Für Gewichtsverlust: 300-500 Kcal weniger pro Tag</li>
+              <li>Für Muskelaufbau: 200-300 Kcal mehr pro Tag</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+Name: ali
+Gewicht: 100
+ Größe: 1.77
+ Alter: 25
+ TDEE: 1554 kcal
+Name: hussin
+Gewicht: 90
+ Größe: 177.0
+ Alter: 28
+ TDEE: 3076 kcal
